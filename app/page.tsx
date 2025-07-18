@@ -1,13 +1,21 @@
-import { Header, Footer, MediaUploadForm } from "@/components";
+import { SignInButton } from "@/components";
+import { auth } from "../lib";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <Header />
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <MediaUploadForm />
+    <div>
+      <main>
+        {session ? (
+          <p>Welcome {session.user?.name}</p>
+        ) : (
+          <div>
+            <p>Not authenticated, bro.</p>
+            <SignInButton>Login or register</SignInButton>
+          </div>
+        )}
       </main>
-      <Footer />
     </div>
   );
 }
